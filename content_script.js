@@ -108,6 +108,18 @@
     }
 
     const settings = settingsResult.settings || {};
+
+    const isEnabled = settings.enabled !== false;
+    const hasBlockedCategory = Array.isArray(settings.categories) && settings.categories.some(function (c) {
+      return c.blocked;
+    });
+
+    if (!isEnabled || !hasBlockedCategory) {
+      showToast("赛博挚友当前未激活");
+      setTimeout(hideToast, 2000);
+      return;
+    }
+
     if (!shouldAnalyze(settings)) {
       return;
     }
@@ -371,9 +383,7 @@
       settings.api &&
       settings.api.baseUrl &&
       settings.api.apiKey &&
-      settings.api.model &&
-      Array.isArray(settings.categories) &&
-      settings.categories.length
+      settings.api.model
     );
   }
 
