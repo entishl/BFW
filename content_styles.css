@@ -1,4 +1,4 @@
-#cyber-buddy-toast {
+#bfw-toast {
   position: fixed;
   top: 18px;
   right: 18px;
@@ -17,12 +17,12 @@
   pointer-events: none;
 }
 
-#cyber-buddy-toast.is-visible {
+#bfw-toast.is-visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-#cyber-buddy-overlay {
+#bfw-overlay {
   position: fixed;
   inset: 0;
   z-index: 2147483647;
@@ -36,11 +36,11 @@
   transition: opacity 220ms ease;
 }
 
-#cyber-buddy-overlay.is-visible {
+#bfw-overlay.is-visible {
   opacity: 1;
 }
 
-.cyber-buddy-panel {
+.bfw-panel {
   width: min(520px, 100%);
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 8px;
@@ -51,14 +51,14 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
 }
 
-.cyber-buddy-eyebrow {
+.bfw-eyebrow {
   margin: 0 0 10px;
   color: #8bd3c7;
   font-size: 13px;
   font-weight: 700;
 }
 
-.cyber-buddy-panel h2 {
+.bfw-panel h2 {
   margin: 0 0 12px;
   color: #ffffff;
   font-size: 26px;
@@ -66,21 +66,21 @@
   letter-spacing: 0;
 }
 
-.cyber-buddy-reason {
+.bfw-reason {
   margin: 0;
   color: #e3e9f2;
   font-size: 16px;
   line-height: 1.7;
 }
 
-.cyber-buddy-categories {
+.bfw-categories {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   margin: 18px 0 0;
 }
 
-.cyber-buddy-categories span {
+.bfw-categories span {
   display: inline-flex;
   align-items: center;
   min-height: 30px;
@@ -92,17 +92,17 @@
   font-weight: 700;
 }
 
-.cyber-buddy-diagnostics {
+.bfw-diagnostics {
   margin-top: 18px;
   color: #ccd6e2;
   font-size: 13px;
 }
 
-.cyber-buddy-diagnostics summary {
+.bfw-diagnostics summary {
   cursor: pointer;
 }
 
-.cyber-buddy-diagnostics pre {
+.bfw-diagnostics pre {
   max-height: 180px;
   overflow: auto;
   margin: 10px 0 0;
@@ -114,13 +114,13 @@
   word-break: break-word;
 }
 
-.cyber-buddy-actions {
+.bfw-actions {
   display: flex;
   gap: 12px;
   margin-top: 24px;
 }
 
-.cyber-buddy-actions button {
+.bfw-actions button {
   min-height: 42px;
   border-radius: 8px;
   border: 1px solid transparent;
@@ -129,18 +129,18 @@
   cursor: pointer;
 }
 
-.cyber-buddy-actions button:focus-visible {
+.bfw-actions button:focus-visible {
   outline: 3px solid rgba(139, 211, 199, 0.55);
   outline-offset: 2px;
 }
 
-.cyber-buddy-primary {
+.bfw-primary {
   flex: 1;
   background: #8bd3c7;
   color: #101820;
 }
 
-.cyber-buddy-secondary {
+.bfw-secondary {
   flex: 1.35;
   background: transparent;
   color: #f8fbff;
@@ -148,20 +148,20 @@
 }
 
 @media (max-width: 560px) {
-  #cyber-buddy-overlay {
+  #bfw-overlay {
     align-items: flex-end;
     padding: 14px;
   }
 
-  .cyber-buddy-panel {
+  .bfw-panel {
     padding: 22px;
   }
 
-  .cyber-buddy-panel h2 {
+  .bfw-panel h2 {
     font-size: 22px;
   }
 
-  .cyber-buddy-actions {
+  .bfw-actions {
     flex-direction: column;
   }
 }

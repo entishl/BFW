@@ -79,7 +79,7 @@
         .then(sendResponse)
         .catch(function (error) {
           logError(error);
-          sendResponse(makeFailSafe("AI_NETWORK_ERROR", "赛博挚友处理请求时出现异常。", null, error.message));
+          sendResponse(makeFailSafe("AI_NETWORK_ERROR", "BFW 处理请求时出现异常。", null, error.message));
         });
       return true;
     }
@@ -138,7 +138,7 @@
     if (!hasApiConfig(settings)) {
       return {
         status: "PASS",
-        reason: "API 尚未配置，赛博挚友暂不工作。",
+        reason: "API 尚未配置，BFW 暂不工作。",
         categories: [],
         cached: false,
         skipped: true
@@ -200,7 +200,7 @@
     }, timeoutMs);
 
     try {
-      console.log("[Cyber-Buddy] 发送给 AI 的请求体:", {
+      console.log("[BFW] 发送给 AI 的请求体:", {
         model: settings.api.model,
         messages: buildMessages(settings, pageData),
         temperature: 0.2
@@ -231,7 +231,7 @@
         return {
           ok: false,
           errorCode: "AI_NETWORK_ERROR",
-          message: "API请求失败，赛博挚友罢工中。",
+          message: "API请求失败，BFW 罢工中。",
           detail: "HTTP " + response.status,
           raw: responseJson
         };
@@ -268,7 +268,7 @@
         return {
           ok: false,
           errorCode: "AI_TIMEOUT",
-          message: "API请求超时，赛博挚友暂时没等到答案。",
+          message: "API请求超时，BFW 暂时没等到答案。",
           raw: null
         };
       }
@@ -276,7 +276,7 @@
       return {
         ok: false,
         errorCode: "AI_NETWORK_ERROR",
-        message: "API请求失败，赛博挚友罢工中。",
+        message: "API请求失败，BFW 罢工中。",
         detail: error ? error.message : null,
         raw: null
       };
@@ -615,7 +615,7 @@
 
   function logError(error) {
     if (DEBUG) {
-      console.error("[Cyber-Buddy]", error);
+      console.error("[BFW]", error);
     }
   }
 })();

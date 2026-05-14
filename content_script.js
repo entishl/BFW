@@ -1,9 +1,9 @@
 (function () {
   "use strict";
 
-  const TOAST_ID = "cyber-buddy-toast";
-  const OVERLAY_ID = "cyber-buddy-overlay";
-  const ROUTE_EVENT = "cyber-buddy-route-change";
+  const TOAST_ID = "bfw-toast";
+  const OVERLAY_ID = "bfw-overlay";
+  const ROUTE_EVENT = "bfw-route-change";
   const DEBUG = false;
 
   const platform = window.CyberBuddyBilibili;
@@ -115,7 +115,7 @@
     });
 
     if (!isEnabled || !hasBlockedCategory) {
-      showToast("赛博挚友当前未激活");
+      showToast("BFW 当前未激活");
       setTimeout(hideToast, 2000);
       return;
     }
@@ -124,7 +124,7 @@
       return;
     }
 
-    showToast("赛博挚友正在检测该网页大致内容...");
+    showToast("BFW 正在检测该网页大致内容...");
     activeAnalysisVideoId = videoId;
 
     try {
@@ -177,7 +177,7 @@
     pauseVideo();
     showOverlay({
       videoId,
-      title: "赛博挚友罢工中",
+      title: "BFW 罢工中",
       reason: result.reason || result.message || "这个视频是不是真的有必要看，请你自己决定。",
       categories: result.categories || [],
       errorCode: result.errorCode || "",
@@ -225,21 +225,21 @@
     overlay.tabIndex = -1;
 
     const panel = document.createElement("section");
-    panel.className = "cyber-buddy-panel";
+    panel.className = "bfw-panel";
 
     const eyebrow = document.createElement("p");
-    eyebrow.className = "cyber-buddy-eyebrow";
+    eyebrow.className = "bfw-eyebrow";
     eyebrow.textContent = options.isFailSafe ? "Fail-Safe 模式" : "命中拦截规则";
 
     const heading = document.createElement("h2");
     heading.textContent = options.title;
 
     const reason = document.createElement("p");
-    reason.className = "cyber-buddy-reason";
+    reason.className = "bfw-reason";
     reason.textContent = options.reason;
 
     const categories = document.createElement("div");
-    categories.className = "cyber-buddy-categories";
+    categories.className = "bfw-categories";
     if (options.categories && options.categories.length) {
       options.categories.forEach(function (name) {
         const chip = document.createElement("span");
@@ -259,7 +259,7 @@
 
     if (options.isFailSafe) {
       const diagnostics = document.createElement("details");
-      diagnostics.className = "cyber-buddy-diagnostics";
+      diagnostics.className = "bfw-diagnostics";
       const summary = document.createElement("summary");
       summary.textContent = "查看调试信息";
       const pre = document.createElement("pre");
@@ -274,11 +274,11 @@
     }
 
     const actions = document.createElement("div");
-    actions.className = "cyber-buddy-actions";
+    actions.className = "bfw-actions";
 
     const closeButton = document.createElement("button");
     closeButton.type = "button";
-    closeButton.className = "cyber-buddy-primary";
+    closeButton.className = "bfw-primary";
     closeButton.textContent = "听你的，关闭页面";
     closeButton.addEventListener("click", function () {
       sendMessage({ type: "CLOSE_TAB" }).then(function (response) {
@@ -290,7 +290,7 @@
 
     const continueButton = document.createElement("button");
     continueButton.type = "button";
-    continueButton.className = "cyber-buddy-secondary";
+    continueButton.className = "bfw-secondary";
     continueButton.textContent = "我知道风险，但我今天想放纵一下";
     continueButton.addEventListener("click", function () {
       continueWatching(options.videoId);
@@ -405,7 +405,7 @@
 
   function logError(error) {
     if (DEBUG) {
-      console.error("[Cyber-Buddy]", error);
+      console.error("[BFW]", error);
     }
   }
 })();

@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "赛博挚友 Cyber-Buddy",
+  "name": "BFW - Brain-Firewall",
   "description": "在 Bilibili 视频播放前进行温和内容提醒与劝退。",
   "version": "1.0.0",
   "permissions": [
