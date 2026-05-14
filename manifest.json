@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "赛博挚友 Cyber-Buddy",
+  "description": "在 Bilibili 视频播放前进行温和内容提醒与劝退。",
+  "version": "1.0.0",
+  "permissions": [
+    "storage",
+    "tabs",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "*://*.bilibili.com/*"
+  ],
+  "optional_host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "options_page": "options.html",
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.bilibili.com/video/BV*"
+      ],
+      "js": [
+        "platform/bilibili.js",
+        "content_script.js"
+      ],
+      "css": [
+        "content_styles.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}
