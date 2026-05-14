@@ -515,6 +515,20 @@
   async function updateVideoCache(videoId, entry) {
     const cache = await getVideoCache();
     cache[videoId] = entry;
+
+    // Prevent cache from growing indefinitely (Memory Leak Fix)
+    const MAX_CACHE_SIZE = 500;
+    const keys = Object.keys(cache);
+    if (keys.length > MAX_CACHE_SIZE) {
+      keys.sort(function(a, b) {
+        return (cache[a].timestamp || 0) - (cache[b].timestamp || 0);
+      });
+      const keysToRemove = keys.slice(0, keys.length - MAX_CACHE_SIZE);
+      keysToRemove.forEach(function(k) {
+        delete cache[k];
+      });
+    }
+
     await storageSet({ [CACHE_KEY]: cache });
   }
 

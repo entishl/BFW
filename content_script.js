@@ -345,6 +345,10 @@
   function continueWatching(videoId) {
     if (videoId) {
       waivedVideoIds.add(videoId);
+      if (waivedVideoIds.size > 50) {
+        const first = waivedVideoIds.values().next().value;
+        waivedVideoIds.delete(first);
+      }
     }
     removeOverlay();
     hideToast();
