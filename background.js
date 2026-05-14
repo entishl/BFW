@@ -148,10 +148,12 @@
     const cache = await getVideoCache();
     if (cache[videoId]) {
       const cached = cache[videoId];
+      const cachedCategories = Array.isArray(cached.categories) ? cached.categories : [];
+      const decision = decideByWhitelistPriority(cachedCategories, settings.categories);
       return {
-        status: cached.isBlocked ? "BLOCKED" : "PASS",
+        status: decision.isBlocked ? "BLOCKED" : "PASS",
         reason: cached.reason || "",
-        categories: Array.isArray(cached.categories) ? cached.categories : [],
+        categories: cachedCategories,
         raw: cached.raw || null,
         cached: true
       };
