@@ -1,0 +1,30 @@
+name: Release Extension
+
+on:
+  push:
+    tags:
+      - 'v*' # 当推送以 v 开头的 tag 时触发 (例如 v1.0.0)
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # 必须赋予写入权限以创建 Release
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Extension ZIP
+        run: |
+          # 获取版本号，例如从 refs/tags/v1.0.0 获取 v1.0.0
+          VERSION=${GITHUB_REF#refs/tags/}
+          
+          # 打包所有文件，并显式排除不需要打包的开发文档和配置文件
+          zip -r "BFW-extension-$VERSION.zip" . -x "*.git*" ".github/*" "dev-docs/*" "README.md" ".gitignore" "*.zip"
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: BFW-extension-*.zip
+          generate_release_notes: true # 自动生成 release note
