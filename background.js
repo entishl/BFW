@@ -6,6 +6,7 @@
   const DEBUG = false;
 
   const DEFAULT_SETTINGS = {
+    enabled: true,
     api: {
       baseUrl: "",
       apiKey: "",
@@ -109,10 +110,25 @@
     }
 
     const settings = await getSettings();
-    if (!settings.categories.length) {
+
+    if (settings.enabled === false) {
       return {
         status: "PASS",
-        reason: "当前无任何分类规则，扩展已暂停工作。",
+        reason: "主开关已关闭，扩展暂停工作。",
+        categories: [],
+        cached: false,
+        skipped: true
+      };
+    }
+
+    const hasBlockedCategory = settings.categories.some(function (c) {
+      return c.blocked;
+    });
+
+    if (!settings.categories.length || !hasBlockedCategory) {
+      return {
+        status: "PASS",
+        reason: "当前无启用的拦截规则，扩展已暂停工作。",
         categories: [],
         cached: false,
         skipped: true
@@ -184,6 +200,11 @@
     }, timeoutMs);
 
     try {
+      console.log("[Cyber-Buddy] 发送给 AI 的请求体:", {
+        model: settings.api.model,
+        messages: buildMessages(settings, pageData),
+        temperature: 0.2
+      });
       const response = await fetch(endpoint, {
         method: "POST",
         signal: controller.signal,
@@ -498,6 +519,7 @@
   function mergeSettings(stored) {
     const source = stored && typeof stored === "object" ? stored : {};
     return {
+      enabled: typeof source.enabled === "boolean" ? source.enabled : DEFAULT_SETTINGS.enabled,
       api: {
         baseUrl: normalizeText(source.api && source.api.baseUrl, 500),
         apiKey: normalizeText(source.api && source.api.apiKey, 500),

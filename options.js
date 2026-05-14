@@ -5,6 +5,7 @@
   const CACHE_KEY = "videoCache";
 
   const DEFAULT_SETTINGS = {
+    enabled: true,
     api: {
       baseUrl: "",
       apiKey: "",
@@ -64,6 +65,7 @@
   }
 
   function bindElements() {
+    elements.enabledInput = document.getElementById("enabledInput");
     elements.baseUrlInput = document.getElementById("baseUrlInput");
     elements.apiKeyInput = document.getElementById("apiKeyInput");
     elements.modelInput = document.getElementById("modelInput");
@@ -112,6 +114,7 @@
 
   function fillForm() {
     const settings = state.settings;
+    elements.enabledInput.checked = settings.enabled;
     elements.baseUrlInput.value = settings.api.baseUrl;
     elements.apiKeyInput.value = settings.api.apiKey;
     elements.modelInput.value = settings.api.model;
@@ -230,6 +233,7 @@
 
   function collectFormSettings() {
     return {
+      enabled: elements.enabledInput.checked,
       api: {
         baseUrl: normalizeText(elements.baseUrlInput.value, 500),
         apiKey: normalizeText(elements.apiKeyInput.value, 500),
@@ -306,6 +310,7 @@
   function mergeSettings(stored) {
     const source = stored && typeof stored === "object" ? stored : {};
     return {
+      enabled: typeof source.enabled === "boolean" ? source.enabled : DEFAULT_SETTINGS.enabled,
       api: {
         baseUrl: normalizeText(source.api && source.api.baseUrl, 500),
         apiKey: normalizeText(source.api && source.api.apiKey, 500),
