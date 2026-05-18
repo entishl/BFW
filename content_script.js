@@ -128,7 +128,7 @@
     activeAnalysisVideoId = videoId;
 
     try {
-      const pageData = await platform.collectPageData(settings.timeouts && settings.timeouts.comment);
+      const pageData = await platform.collectPageData(settings.timeouts && settings.timeouts.comment, videoId);
       if (!isRunCurrent(thisRun, videoId)) {
         return;
       }

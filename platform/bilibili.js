@@ -12,14 +12,18 @@
     return match ? match[0] : "";
   }
 
-  async function collectPageData(commentWaitSeconds) {
-    await waitForElement([
-      "h1.video-title",
-      "h1[title]",
-      ".video-title",
-      ".video-info-title",
-      "meta[property='og:title']"
-    ], 2000);
+  async function collectPageData(commentWaitSeconds, videoId) {
+    if (videoId) {
+      await waitForNewPageReady(videoId, 2000);
+    } else {
+      await waitForElement([
+        "h1.video-title",
+        "h1[title]",
+        ".video-title",
+        ".video-info-title",
+        "meta[property='og:title']"
+      ], 2000);
+    }
 
     return {
       title: readTitle(),
@@ -141,6 +145,29 @@
     const selector = "meta[name='" + name + "'], meta[property='" + name + "']";
     const node = document.querySelector(selector);
     return node ? cleanText(node.getAttribute("content"), 500) : "";
+  }
+
+  function waitForNewPageReady(targetVideoId, timeoutMs) {
+    return new Promise(function (resolve) {
+      const start = Date.now();
+      const timer = setInterval(function () {
+        const canonicalLink = document.querySelector('link[rel="canonical"]');
+        const ogUrlMeta = document.querySelector('meta[property="og:url"]');
+        const currentUrl = (canonicalLink && canonicalLink.href) || 
+                           (ogUrlMeta && ogUrlMeta.getAttribute("content")) || "";
+                           
+        if (currentUrl.includes(targetVideoId)) {
+          clearInterval(timer);
+          resolve(true);
+          return;
+        }
+
+        if (Date.now() - start >= timeoutMs) {
+          clearInterval(timer);
+          resolve(false);
+        }
+      }, 100);
+    });
   }
 
   function waitForElement(selectors, timeoutMs) {
