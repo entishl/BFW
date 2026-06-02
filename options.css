@@ -41,7 +41,7 @@ body {
 .page-shell {
   width: min(1080px, calc(100vw - 32px));
   margin: 0 auto;
-  padding: 34px 0 48px;
+  padding: 34px 0 100px;
 }
 
 .page-header,
@@ -153,10 +153,11 @@ button {
 }
 
 .status-message {
-  min-height: 22px;
-  margin: 16px 0 0;
+  margin: 0;
   color: var(--accent-strong);
   font-weight: 700;
+  font-size: 14px;
+  opacity: 1;
 }
 
 .warning {
@@ -237,5 +238,50 @@ button {
 
   .row-actions {
     justify-content: flex-start;
+  }
+}
+
+/* 悬浮底栏 */
+.bottom-action-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(245, 247, 251, 0.85); /* 半透明 --bg */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
+  padding: 16px 0;
+  z-index: 1000;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
+}
+
+@media (prefers-color-scheme: dark) {
+  .bottom-action-bar {
+    background: rgba(17, 24, 32, 0.85); /* 半透明暗色 --bg */
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.bottom-action-bar .bar-content {
+  width: min(1080px, calc(100vw - 32px));
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+@media (max-width: 820px) {
+  .bottom-action-bar .bar-content {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .bottom-action-bar {
+    padding: 12px 16px;
+  }
+  .bottom-action-bar .status-message {
+    text-align: center;
   }
 }

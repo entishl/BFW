@@ -336,9 +336,27 @@
     };
   }
 
+  let statusTimeout = null;
   function setStatus(message, isError) {
+    if (statusTimeout) {
+      clearTimeout(statusTimeout);
+      statusTimeout = null;
+    }
     elements.statusMessage.textContent = message;
     elements.statusMessage.style.color = isError ? "var(--danger)" : "var(--accent-strong)";
+    elements.statusMessage.style.opacity = "1";
+    elements.statusMessage.style.transition = "";
+
+    if (!isError && message) {
+      statusTimeout = setTimeout(function () {
+        elements.statusMessage.style.transition = "opacity 0.8s ease";
+        elements.statusMessage.style.opacity = "0";
+        statusTimeout = setTimeout(function () {
+          elements.statusMessage.textContent = "";
+          elements.statusMessage.style.transition = "";
+        }, 800);
+      }, 3000);
+    }
   }
 
   function normalizeText(value, maxLength) {

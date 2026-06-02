@@ -55,6 +55,16 @@
     ensureInitialized().catch(logError);
   });
 
+  chrome.storage.onChanged.addListener(function (changes, areaName) {
+    if (areaName === "local" && changes[SETTINGS_KEY]) {
+      const newSettings = changes[SETTINGS_KEY].newValue;
+      updateBadge(newSettings);
+    }
+  });
+
+  // Ensure settings are initialized and badge is updated on service worker startup
+  ensureInitialized().catch(logError);
+
   chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     if (!message || !message.type) {
       return false;
@@ -486,11 +496,13 @@
   async function ensureInitialized() {
     const stored = await storageGet([SETTINGS_KEY, CACHE_KEY]);
     const updates = {};
+    let currentSettings;
 
     if (!stored[SETTINGS_KEY]) {
+      currentSettings = DEFAULT_SETTINGS;
       updates[SETTINGS_KEY] = DEFAULT_SETTINGS;
     } else {
-      updates[SETTINGS_KEY] = mergeSettings(stored[SETTINGS_KEY]);
+      currentSettings = mergeSettings(stored[SETTINGS_KEY]);
     }
 
     if (!stored[CACHE_KEY]) {
@@ -500,6 +512,8 @@
     if (Object.keys(updates).length) {
       await storageSet(updates);
     }
+
+    updateBadge(currentSettings);
   }
 
   async function getSettings() {
@@ -627,6 +641,18 @@
         resolve();
       });
     });
+  }
+
+  function updateBadge(settings) {
+    if (!chrome.action) {
+      return;
+    }
+    if (settings && settings.enabled === false) {
+      chrome.action.setBadgeText({ text: "OFF" });
+      chrome.action.setBadgeBackgroundColor({ color: "#808080" });
+    } else {
+      chrome.action.setBadgeText({ text: "" });
+    }
   }
 
   function logError(error) {
