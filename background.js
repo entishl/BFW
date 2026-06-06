@@ -307,7 +307,15 @@
     }
 
     const categoryNames = payload.categories.map(function (item) {
-      return normalizeText(item, 80);
+      const normalized = normalizeText(item, 80);
+      const matchNumber = normalized.match(/^(\d+)$/);
+      if (matchNumber) {
+        const index = parseInt(matchNumber[1], 10) - 1;
+        if (index >= 0 && index < categories.length) {
+          return categories[index].name;
+        }
+      }
+      return normalized;
     }).filter(Boolean);
 
     if (!categoryNames.length) {
